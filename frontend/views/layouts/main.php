@@ -22,6 +22,12 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+
+	<script>
+		var AppConfig = {
+			version: '<?= APP_VERSION ?>'
+		};
+	</script>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -64,6 +70,7 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+	  <bootstrap-alert></bootstrap-alert>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
@@ -77,7 +84,10 @@ AppAsset::register($this);
     </div>
 </footer>
 
-<?php $this->endBody() ?>
+<?php $this->endBody();
+AppAsset::tags(['bootstrap-alert']);
+AppAsset::endBody();
+?>
 </body>
 </html>
 <?php $this->endPage() ?>

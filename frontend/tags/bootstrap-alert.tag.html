@@ -1,0 +1,52 @@
+<!--
+	styles:
+  ...
+-->
+<bootstrap-alert>
+<div if="{showAlert}" onclick="{ click }" class="alert {alertCSS}" role="alert">
+  <button if="{closeButton}" type="button" class="close" data-dismiss="alert">&times;</button>
+  {alert_message}
+</div>
+<!--
+	snCore events:
+	bootstrap-alert
+	{ alertType, message, dismiss }
+-->
+<script>
+/*
+test comment
+*/
+// test comment
+	this.showAlert = false;
+
+	this.click = event => {
+		this.showAlert = false;
+  }
+
+ require(['sncore'], snCore =>	{
+	snCore.on('bootstrap-alert', event => {
+		this.closeButton = false;
+		let resultCss = '';
+
+		if (event.alertType) {
+			resultCss += ' ' + 'alert-' + event.alertType;
+		}
+		if (event.dismiss) {
+			resultCss += ' ' + 'alert-dismissible';
+			this.closeButton = true;
+		}
+
+		this.showAlert = true;
+
+		this.alertCSS = resultCss;
+		this.alert_message = event.message;
+
+		this.update();
+	});
+});
+// test comment
+/*
+test comment
+*/
+</script>
+</bootstrap-alert>

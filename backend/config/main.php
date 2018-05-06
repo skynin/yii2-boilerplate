@@ -6,6 +6,8 @@ $params = array_merge(
     require __DIR__ . '/params-local.php'
 );
 
+$routes = require(__DIR__ . '/routes.php');
+
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
@@ -15,6 +17,9 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+			'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -37,14 +42,20 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
+		'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'sourcePath' => null,   // do not publish the bundle
+                    'js' => [
+                        'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js',
+                    ],
+					'jsOptions' => [ 'position' => \yii\web\View::POS_HEAD ]
+                ],
             ],
         ],
-        */
+        'urlManager' => [
+            'rules' => $routes,
+        ],
     ],
     'params' => $params,
 ];

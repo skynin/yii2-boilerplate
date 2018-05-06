@@ -20,12 +20,14 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property array $ext_info
  */
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+	use ExtInfoTrait;
 
     /**
      * {@inheritdoc}
@@ -38,12 +40,12 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    /* public function behaviors()
     {
         return [
             TimestampBehavior::className(),
         ];
-    }
+    }*/
 
     /**
      * {@inheritdoc}
@@ -186,4 +188,16 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+	public static function find ()
+	{
+		return Yii::createObject(UserQuery::class, [get_called_class()]);
+	}
+
+	public function fields ()
+	{
+		return [
+			'id', 'username', 'status', 'created_at', 'updated_at'
+ 		];
+	}
 }

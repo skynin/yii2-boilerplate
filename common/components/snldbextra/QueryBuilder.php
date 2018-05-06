@@ -33,9 +33,7 @@ class QueryBuilder extends \yii\db\mysql\QueryBuilder
         if (!empty($lockMode)) {
             list($sql, $params) = $result;
 
-            $sql .= ' ' . $lockMode;
-
-            $result = [$sql, $params];
+            $result = [$sql . ' ' . $lockMode, $params];
         }
 
         return $result;

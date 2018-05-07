@@ -189,7 +189,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-	public static function find ()
+	public static function find () : UserQuery
 	{
 		return Yii::createObject(UserQuery::class, [get_called_class()]);
 	}

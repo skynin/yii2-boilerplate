@@ -11,25 +11,17 @@ use yii\db\Expression;
  */
 trait ExtInfoQueryTrait
 {
-	function jsonWhere(array $args) : \yii\db\ActiveQueryInterface
+	function joWhere(array $args) : \yii\db\ActiveQuery
 	{
-		// ext_info->>'$.foo_id' = '123'
+		$joQue = 'ext_info->>\'$.';
 
+		$firstElem = reset($args);
+		if (preg_match('/^(<>|>=|>|<=|<|=|is)/i', $firstElem)) {
+			$this->andWhere("$joQue$args[1]' $args[0] $args[2]");
+		}
+		else
 		foreach ($args as $key=>$value) {
-
-			$joQue = 'ext_info->>\'$.';
-			$joBind = [':joValue' => null];
-
-			if ( is_array($value)) {
-				$joQue .= $value[1] . '\' ' . $value[0] . ' ';
-				$joBind[':joValue'] = $value[2];
-			}
-			else {
-				$joQue .= $key . '\' = ';
-				$joBind[':joValue'] = $value;
-			}
-
-			$this->andWhere(new Expression($joQue . ' ' . ':joValue', $joBind));
+			$this->andWhere(new Expression($joQue . $key . '\' = ' . ':joValue', [':joValue' => $value]));
 		}
 
 		return $this;
